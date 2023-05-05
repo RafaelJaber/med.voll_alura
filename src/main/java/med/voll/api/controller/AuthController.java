@@ -3,6 +3,7 @@ package med.voll.api.controller;
 import jakarta.validation.Valid;
 import med.voll.api.domain.user.dto.AuthenticationDataDTO;
 import med.voll.api.domain.user.model.User;
+import med.voll.api.infrastructure.security.dto.ResponseTokenJwtDTO;
 import med.voll.api.infrastructure.security.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +28,12 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity logIn(@RequestBody @Valid AuthenticationDataDTO dto) {
-        Authentication token = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
-        Authentication authentication = manager.authenticate(token);
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
+        Authentication authentication = manager.authenticate(authenticationToken);
 
-        return ResponseEntity.ok(tokenService.generateToken((User) authentication.getPrincipal()));
+        String tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
+
+        return ResponseEntity.ok(new ResponseTokenJwtDTO(tokenJWT));
 
     }
 
