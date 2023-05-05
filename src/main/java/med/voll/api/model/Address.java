@@ -28,4 +28,14 @@ public class Address {
         this.complement = dto.complement();
         this.number = dto.number();
     }
+
+    public void Update(AddressDto dto) {
+        if (dto.publicPlace() != null) this.publicPlace = dto.publicPlace();
+        if (dto.neighborhood() != null) this.neighborhood = dto.neighborhood();
+        if (dto.zipCode() != null) this.zipCode = dto.zipCode();
+        if (dto.city() != null) this.city = dto.city();
+        if (dto.state() != null) this.state = dto.state();
+        if (dto.complement() != null) this.complement = dto.complement();
+        if (dto.number() != null) this.number = dto.number();
+    }
 }
