@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.print.Doc;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,7 @@ public class DoctorController {
     @GetMapping
     public Page<DoctorReadMinDto> GetAll(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
         return repository
-                .findAll(pageable)
+                .findAllByStatusTrue(pageable)
                 .map(DoctorReadMinDto::new);
     }
 
@@ -52,6 +53,21 @@ public class DoctorController {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void Delete(@PathVariable Long id) {
+        // repository.deleteById(id); // Essa é uma exclusão física
+        try {
+            Doctor doctor = repository.getReferenceById(id);
+            doctor.Delete();
+
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }
