@@ -40,16 +40,9 @@ public class DoctorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DoctorReadDto> GetById(@PathVariable Long id) {
-        try {
-            Doctor doctor = repository.getReferenceById(id);
-            DoctorReadDto doctorDto = new DoctorReadDto(doctor);
-            return ResponseEntity.ok(doctorDto);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
-        }
+        Doctor doctor = repository.getReferenceById(id);
+        DoctorReadDto doctorDto = new DoctorReadDto(doctor);
+        return ResponseEntity.ok(doctorDto);
     }
 
     @PostMapping
@@ -63,33 +56,21 @@ public class DoctorController {
     @PutMapping
     @Transactional
     public ResponseEntity Update(@RequestBody @Valid DoctorUpdateDto dto) {
-        try {
-            Doctor doctor = repository.getReferenceById(dto.id());
-            doctor.Update(dto);
-            return ResponseEntity.accepted().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
-        }
 
+        Doctor doctor = repository.getReferenceById(dto.id());
+        doctor.Update(dto);
+        return ResponseEntity.accepted().build();
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity Delete(@PathVariable Long id) {
         // repository.deleteById(id); // Essa é uma exclusão física
-        try {
-            Doctor doctor = repository.getReferenceById(id);
-            doctor.Delete();
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
-        }
+
+        Doctor doctor = repository.getReferenceById(id);
+        doctor.Delete();
+        return ResponseEntity.noContent().build();
+
     }
 
 }
