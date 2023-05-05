@@ -21,6 +21,7 @@ public class Patient {
     private String email;
     private String telephone;
     private String document;
+    private Boolean status;
 
     @Embedded
     private Address address;
@@ -31,11 +32,16 @@ public class Patient {
         this.telephone = dto.telephone();
         this.document = dto.document();
         this.address = new Address(dto.address());
+        this.status = true;
     }
 
     public void Update(PatientUpdateDto dto) {
         if (dto.name() != null) this.name = dto.name();
         if (dto.telephone() != null) this.telephone = dto.telephone();
         if (dto.address() != null) this.address.Update(dto.address());
+    }
+
+    public void Delete() {
+        this.status = false;
     }
 }

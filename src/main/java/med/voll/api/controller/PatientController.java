@@ -28,7 +28,7 @@ public class PatientController {
     @GetMapping
     public Page<PatientReadMinDto> GetAll(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
         return repository
-                .findAll(pageable)
+                .findAllByStatusTrue(pageable)
                 .map(PatientReadMinDto::new);
     }
 
@@ -45,6 +45,19 @@ public class PatientController {
         try {
             Patient patient = repository.getReferenceById(dto.id());
             patient.Update(dto);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void Delete(@PathVariable Long id) {
+        try {
+            Patient patient = repository.getReferenceById(id);
+            patient.Delete();
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         } catch (Exception e) {
