@@ -12,12 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.print.Doc;
-import java.util.List;
+import java.net.URI;
+
 
 @RestController
 @RequestMapping("/doctors")
@@ -30,57 +31,64 @@ public class DoctorController {
     }
 
     @GetMapping
-    public Page<DoctorReadMinDto> GetAll(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
-        return repository
+    public ResponseEntity<Page<DoctorReadMinDto>> GetAll(@PageableDefault(size = 10, sort = {"name"}) Pageable pageable) {
+        Page<DoctorReadMinDto> page = repository
                 .findAllByStatusTrue(pageable)
                 .map(DoctorReadMinDto::new);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
-    public DoctorReadDto GetById(@PathVariable Long id) {
+    public ResponseEntity<DoctorReadDto> GetById(@PathVariable Long id) {
         try {
             Doctor doctor = repository.getReferenceById(id);
-            return new DoctorReadDto(doctor);
+            DoctorReadDto doctorDto = new DoctorReadDto(doctor);
+            return ResponseEntity.ok(doctorDto);
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "error");
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
         }
     }
 
     @PostMapping
     @Transactional
-    public void Create(@RequestBody @Valid DoctorCreateDto dto) {
-        repository.save(new Doctor(dto));
+    public ResponseEntity Create(@RequestBody @Valid DoctorCreateDto dto, UriComponentsBuilder uriBuilder) {
+        Doctor doctor = repository.save(new Doctor(dto));
+        URI locator = uriBuilder.path("/doctors/{id}").buildAndExpand(doctor.getId()).toUri();
+        return ResponseEntity.created(locator).body(dto);
     }
 
     @PutMapping
     @Transactional
-    public void Update(@RequestBody @Valid DoctorUpdateDto dto) {
+    public ResponseEntity Update(@RequestBody @Valid DoctorUpdateDto dto) {
         try {
             Doctor doctor = repository.getReferenceById(dto.id());
             doctor.Update(dto);
+            return ResponseEntity.accepted().build();
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
         }
 
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void Delete(@PathVariable Long id) {
+    public ResponseEntity Delete(@PathVariable Long id) {
         // repository.deleteById(id); // Essa é uma exclusão física
         try {
             Doctor doctor = repository.getReferenceById(id);
             doctor.Delete();
-
+            return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
         }
     }
 
