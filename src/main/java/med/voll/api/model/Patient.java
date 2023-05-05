@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.dto.PatientCreateDto;
+import med.voll.api.dto.PatientUpdateDto;
 
 
 @Table( name = "TB_Patient" )
@@ -30,5 +31,11 @@ public class Patient {
         this.telephone = dto.telephone();
         this.document = dto.document();
         this.address = new Address(dto.address());
+    }
+
+    public void Update(PatientUpdateDto dto) {
+        if (dto.name() != null) this.name = dto.name();
+        if (dto.telephone() != null) this.telephone = dto.telephone();
+        if (dto.address() != null) this.address.Update(dto.address());
     }
 }
