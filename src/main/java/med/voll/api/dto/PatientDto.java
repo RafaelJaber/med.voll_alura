@@ -1,4 +1,22 @@
 package med.voll.api.dto;
 
-public record PatientDto(String name, String email, String telephone, String document, AddressDto addressDto) {
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record PatientDto(
+        @NotBlank
+        String name,
+        @NotBlank
+        @Email
+        String email,
+        @NotBlank
+        String telephone,
+        @NotBlank
+        String document,
+        @NotNull
+        @Valid
+        AddressDto address
+) {
 }
