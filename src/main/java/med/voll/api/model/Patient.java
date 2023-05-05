@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.dto.PatientDto;
+import med.voll.api.dto.PatientCreateDto;
 
 
 @Table( name = "TB_Patient" )
@@ -24,7 +24,7 @@ public class Patient {
     @Embedded
     private Address address;
 
-    public Patient(PatientDto dto) {
+    public Patient(PatientCreateDto dto) {
         this.name = dto.name();
         this.email = dto.email();
         this.telephone = dto.telephone();
