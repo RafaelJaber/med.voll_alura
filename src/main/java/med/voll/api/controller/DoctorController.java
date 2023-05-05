@@ -3,6 +3,7 @@ package med.voll.api.controller;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import med.voll.api.dto.DoctorCreateDto;
+import med.voll.api.dto.DoctorReadDto;
 import med.voll.api.dto.DoctorReadMinDto;
 import med.voll.api.dto.DoctorUpdateDto;
 import med.voll.api.model.Doctor;
@@ -33,6 +34,19 @@ public class DoctorController {
         return repository
                 .findAllByStatusTrue(pageable)
                 .map(DoctorReadMinDto::new);
+    }
+
+    @GetMapping("/{id}")
+    public DoctorReadDto GetById(@PathVariable Long id) {
+        try {
+            Doctor doctor = repository.getReferenceById(id);
+            return new DoctorReadDto(doctor);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "error");
+        }
     }
 
     @PostMapping
