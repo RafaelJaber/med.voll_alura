@@ -2,12 +2,12 @@ package med.voll.api.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import med.voll.api.dto.DoctorCreateDto;
-import med.voll.api.dto.DoctorReadDto;
-import med.voll.api.dto.DoctorReadMinDto;
-import med.voll.api.dto.DoctorUpdateDto;
-import med.voll.api.model.Doctor;
-import med.voll.api.repository.DoctorRepository;
+import med.voll.api.domain.doctor.dto.DoctorCreateDto;
+import med.voll.api.domain.doctor.dto.DoctorReadDto;
+import med.voll.api.domain.doctor.dto.DoctorReadMinDto;
+import med.voll.api.domain.doctor.dto.DoctorUpdateDto;
+import med.voll.api.domain.doctor.model.Doctor;
+import med.voll.api.domain.doctor.repository.DoctorRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

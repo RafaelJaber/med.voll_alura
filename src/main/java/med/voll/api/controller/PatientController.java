@@ -2,12 +2,12 @@ package med.voll.api.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import med.voll.api.dto.PatientCreateDto;
-import med.voll.api.dto.PatientReadDto;
-import med.voll.api.dto.PatientReadMinDto;
-import med.voll.api.dto.PatientUpdateDto;
-import med.voll.api.model.Patient;
-import med.voll.api.repository.PatientRepository;
+import med.voll.api.domain.patient.dto.PatientCreateDto;
+import med.voll.api.domain.patient.dto.PatientReadDto;
+import med.voll.api.domain.patient.dto.PatientReadMinDto;
+import med.voll.api.domain.patient.dto.PatientUpdateDto;
+import med.voll.api.domain.patient.model.Patient;
+import med.voll.api.domain.patient.repository.PatientRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
