@@ -11,7 +11,7 @@ import med.voll.api.domain.shared.Specialty;
 import med.voll.api.domain.address.model.Address;
 
 @Table( name = "TB_Doctor")
-@Entity( name = "DoctorDto")
+@Entity( name = "Doctor")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

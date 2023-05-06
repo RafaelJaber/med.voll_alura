@@ -12,7 +12,7 @@ import med.voll.api.domain.patient.model.Patient;
 import java.time.LocalDateTime;
 
 @Table( name = "TB_Schedule")
-@Entity( name = "ScheduleDataDTO")
+@Entity( name = "Schedule")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
