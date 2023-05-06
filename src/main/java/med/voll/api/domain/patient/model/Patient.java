@@ -10,7 +10,7 @@ import med.voll.api.domain.address.model.Address;
 
 
 @Table( name = "TB_Patient" )
-@Entity( name = "PatientDto" )
+@Entity( name = "Patient" )
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")

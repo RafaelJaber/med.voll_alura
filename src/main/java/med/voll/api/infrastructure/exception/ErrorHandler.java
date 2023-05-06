@@ -5,7 +5,6 @@ import med.voll.api.domain.shared.dto.DataErrorValidationDTO;
 import med.voll.api.domain.shared.dto.DefaultErrorMessageDTO;
 import med.voll.api.domain.shared.dto.FieldErrorValidationDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -43,6 +42,18 @@ public class ErrorHandler {
                 "400",
                 errors,
                 0
+        );
+        return ResponseEntity.badRequest().body(errorBody);
+    }
+
+    @ExceptionHandler(SchedulingValidationException.class)
+    public ResponseEntity errorSchedulingValidationException(SchedulingValidationException ex) {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        DefaultErrorMessageDTO errorBody = new DefaultErrorMessageDTO(
+                now,
+                "400",
+                ex.getMessage(),
+                10
         );
         return ResponseEntity.badRequest().body(errorBody);
     }

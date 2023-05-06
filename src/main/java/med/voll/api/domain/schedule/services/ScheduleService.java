@@ -8,9 +8,12 @@ import med.voll.api.domain.schedule.dto.ScheduleCancellationDataDTO;
 import med.voll.api.domain.schedule.dto.ScheduleDataDTO;
 import med.voll.api.domain.schedule.model.Schedule;
 import med.voll.api.domain.schedule.repository.ScheduleRepository;
+import med.voll.api.domain.schedule.validators.ScheduleValidator;
 import med.voll.api.infrastructure.exception.SchedulingValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ScheduleService {
@@ -18,12 +21,15 @@ public class ScheduleService {
     @Autowired private ScheduleRepository scheduleRepository;
     @Autowired private DoctorRepository doctorRepository;
     @Autowired private PatientRepository patientRepository;
+    @Autowired List<ScheduleValidator> validators;
 
     public void toSchedule(ScheduleDataDTO dto){
         if (!patientRepository.existsById(dto.idPatient()))
             throw new SchedulingValidationException("Informed patient id does not exist!");
         if ( dto.idDoctor() != null && !doctorRepository.existsById(dto.idDoctor()))
             throw new SchedulingValidationException("Informed doctor id does not exist!");
+
+        validators.forEach(v -> v.validate(dto));
 
         Doctor doctor = chooseDoctor(dto);
         Patient patient = patientRepository.getReferenceById(dto.idPatient());

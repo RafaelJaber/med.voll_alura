@@ -25,4 +25,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             ORDER BY RAND() LIMIT 1
             """)
     Doctor chooseFreeRandomDoctorOnDate(Specialty specialty, LocalDateTime date);
+
+    @Query("SELECT d.status FROM Doctor d WHERE d.id = :id")
+    boolean findByStatusTrueAndById(Long id);
 }
