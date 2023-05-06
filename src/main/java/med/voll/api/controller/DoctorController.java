@@ -1,6 +1,6 @@
 package med.voll.api.controller;
 
-import jakarta.persistence.EntityNotFoundException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import med.voll.api.domain.doctor.dto.DoctorCreateDto;
 import med.voll.api.domain.doctor.dto.DoctorReadDto;
@@ -11,7 +11,6 @@ import med.voll.api.domain.doctor.repository.DoctorRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/doctors")
+@SecurityRequirement(name = "bearer-key")
 public class DoctorController {
 
     private final DoctorRepository repository;
