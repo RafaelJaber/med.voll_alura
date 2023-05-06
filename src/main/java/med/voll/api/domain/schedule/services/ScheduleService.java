@@ -12,8 +12,6 @@ import med.voll.api.infrastructure.exception.SchedulingValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ScheduleService {
 
@@ -24,7 +22,7 @@ public class ScheduleService {
     public void toSchedule(ScheduleDataDTO dto){
         if (!patientRepository.existsById(dto.idPatient()))
             throw new SchedulingValidationException("Informed patient id does not exist!");
-        if ( dto.idDoctor() != null && !doctorRepository.existsById(dto.idPatient()))
+        if ( dto.idDoctor() != null && !doctorRepository.existsById(dto.idDoctor()))
             throw new SchedulingValidationException("Informed doctor id does not exist!");
 
         Doctor doctor = chooseDoctor(dto);
