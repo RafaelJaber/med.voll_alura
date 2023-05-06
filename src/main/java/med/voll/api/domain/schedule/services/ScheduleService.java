@@ -4,6 +4,7 @@ import med.voll.api.domain.doctor.model.Doctor;
 import med.voll.api.domain.doctor.repository.DoctorRepository;
 import med.voll.api.domain.patient.model.Patient;
 import med.voll.api.domain.patient.repository.PatientRepository;
+import med.voll.api.domain.schedule.dto.ScheduleCancellationDataDTO;
 import med.voll.api.domain.schedule.dto.ScheduleDataDTO;
 import med.voll.api.domain.schedule.model.Schedule;
 import med.voll.api.domain.schedule.repository.ScheduleRepository;
@@ -28,7 +29,7 @@ public class ScheduleService {
 
         Doctor doctor = chooseDoctor(dto);
         Patient patient = patientRepository.getReferenceById(dto.idPatient());
-        Schedule schedule = new Schedule(null, doctor, patient, dto.date());
+        Schedule schedule = new Schedule(null, doctor, patient, dto.date(), null);
         scheduleRepository.save(schedule);
     }
 
@@ -42,4 +43,11 @@ public class ScheduleService {
         return doctorRepository.chooseFreeRandomDoctorOnDate(dto.specialty(), dto.date());
     }
 
+    public void cancelAppointment(ScheduleCancellationDataDTO dto) {
+        if (!scheduleRepository.existsById(dto.idSchedule()))
+            throw new SchedulingValidationException("Appointment not found in database!");
+
+        Schedule schedule = scheduleRepository.getReferenceById(dto.idSchedule());
+        schedule.cancel(dto.reason());
+    }
 }

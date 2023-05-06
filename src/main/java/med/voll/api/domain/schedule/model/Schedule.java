@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.domain.doctor.model.Doctor;
 import med.voll.api.domain.patient.model.Patient;
+import med.voll.api.domain.shared.CancellationReasonEnum;
 
 import java.time.LocalDateTime;
 
@@ -32,4 +33,13 @@ public class Schedule {
     private Patient patient;
 
     private LocalDateTime date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cancellation_reason")
+    private CancellationReasonEnum reason;
+
+
+    public void cancel(CancellationReasonEnum reason) {
+        this.reason = reason;
+    }
 }

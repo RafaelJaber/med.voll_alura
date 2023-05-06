@@ -1,0 +1,1 @@
+ALTER TABLE TB_Schedule ADD COLUMN cancellation_reason VARCHAR(100);
