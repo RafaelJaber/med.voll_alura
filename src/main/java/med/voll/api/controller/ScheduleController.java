@@ -22,9 +22,9 @@ public class ScheduleController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity schedule(@RequestBody ScheduleDataDTO dto) {
-        scheduleService.toSchedule(dto);
-        return ResponseEntity.ok(new ScheduleDetailingDataDTO(null, null, null, null));
+    public ResponseEntity schedule(@RequestBody @Valid ScheduleDataDTO dto) {
+        ScheduleDetailingDataDTO scheduleDetailingDataDTO = scheduleService.toSchedule(dto);
+        return ResponseEntity.ok(scheduleDetailingDataDTO);
     }
 
     @DeleteMapping
