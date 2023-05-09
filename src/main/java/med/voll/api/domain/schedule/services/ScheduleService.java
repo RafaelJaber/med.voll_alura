@@ -6,6 +6,7 @@ import med.voll.api.domain.patient.model.Patient;
 import med.voll.api.domain.patient.repository.PatientRepository;
 import med.voll.api.domain.schedule.dto.ScheduleCancellationDataDTO;
 import med.voll.api.domain.schedule.dto.ScheduleDataDTO;
+import med.voll.api.domain.schedule.dto.ScheduleDetailingDataDTO;
 import med.voll.api.domain.schedule.model.Schedule;
 import med.voll.api.domain.schedule.repository.ScheduleRepository;
 import med.voll.api.domain.schedule.validators.ScheduleValidator;
@@ -23,7 +24,7 @@ public class ScheduleService {
     @Autowired private PatientRepository patientRepository;
     @Autowired List<ScheduleValidator> validators;
 
-    public void toSchedule(ScheduleDataDTO dto){
+    public ScheduleDetailingDataDTO toSchedule(ScheduleDataDTO dto){
         if (!patientRepository.existsById(dto.idPatient()))
             throw new SchedulingValidationException("Informed patient id does not exist!");
         if ( dto.idDoctor() != null && !doctorRepository.existsById(dto.idDoctor()))
@@ -35,6 +36,7 @@ public class ScheduleService {
         Patient patient = patientRepository.getReferenceById(dto.idPatient());
         Schedule schedule = new Schedule(null, doctor, patient, dto.date(), null);
         scheduleRepository.save(schedule);
+        return new ScheduleDetailingDataDTO(schedule);
     }
 
     private Doctor chooseDoctor(ScheduleDataDTO dto) {
